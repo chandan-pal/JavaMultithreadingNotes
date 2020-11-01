@@ -1,0 +1,27 @@
+JAVA DESIGN PATTERNS
+1. Creational
+	a) Abstract Factory
+	b) Builder
+	c) Factory method
+	d) Prototype
+	c) Singleton
+2. Structural
+	a) Adaptor
+	b) Bridge
+	c) Composite
+	d) Decorator
+	e) Facade
+	f) Flyweight
+	g) Proxy
+3. Behavioral
+	a) Command
+	b) Interpreter
+	c) Iterator
+	d) Mediator
+	e) Memento
+	f) Chain of responsibility
+	g) Template method
+	h) Visitor
+	i) Observer
+	j) Strategy
+	k) State

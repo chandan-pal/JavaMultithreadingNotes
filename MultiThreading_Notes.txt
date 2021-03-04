@@ -22,7 +22,7 @@ Lifecycle of a Thread in Java:
 			c. Thread.join with timeout
 			d. LockSupport.parkNanos
 			e. LockSupport.parkUntil
-	6. Terminated (The has competed its execution either successfully or got terminated due to some exception)
+	6. Terminated (The thread has competed its execution either successfully or got terminated due to some exception)
 		
 	
 	To get the current state of Thread: thread.getState();

@@ -16,13 +16,14 @@ Lifecycle of a Thread in Java:
 			b. Thread.join with no timeout
 			c. LockSupport.park
 	5. Timed Waiting (The Thread called a method with timeout parameter and it is waiting until the timeout)
-	6. Terminated (The has competed its execution either successfully or got terminated due to some exception)
 		A thread can be put in timed waiting state by calling:
 			a. Thread.sleep
 			b. Object.wait with timeout
 			c. Thread.join with timeout
 			d. LockSupport.parkNanos
 			e. LockSupport.parkUntil
+	6. Terminated (The has competed its execution either successfully or got terminated due to some exception)
+		
 	
 	To get the current state of Thread: thread.getState();
 

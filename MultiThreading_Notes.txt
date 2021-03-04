@@ -22,7 +22,7 @@ Lifecycle of a Thread in Java:
 			c. Thread.join with timeout
 			d. LockSupport.parkNanos
 			e. LockSupport.parkUntil
-	6. Terminated (The thread has competed its execution either successfully or got terminated due to some exception)
+	6. Terminated (The thread has completed its execution either successfully or got terminated due to some exception)
 		
 	
 	To get the current state of Thread: thread.getState();
@@ -33,7 +33,7 @@ MAIN THREAD:
 	- The main thread first verifies the existence of main method and then it initializes the class.
 	- to obtain a reference of main thread: Thread.currentThread();
 
-YIELD, SLEEP & JOIN
+YIELD, SLEEP & JOIN (methods on thread)
 	yield():
 		- means that the thread is not doing anything particularly important and if any other thread or process need to run, they should run. Otherwise the current thred will run.
 		- it tells the Thread scheduler that this thread is ready to pause if needed
@@ -51,7 +51,7 @@ YIELD, SLEEP & JOIN
 		- If any executing thread t1 calls join() on t2 i.e; t2.join() immediately t1 will enter into waiting state until t2 completes its execution
 
 
-WAIT, NOTIFY, NOTIFYALL
+WAIT, NOTIFY, NOTIFYALL (methods on object)
 	All these methods belong to object class as final so that all classes have them. They must be used within a synchronized block only.
 	synchronized block ensures only one thread runniing at a time
 	wait():
@@ -71,7 +71,7 @@ Thread Priority:
 	
 Thread Pool:
 	- A group of pre-created threads that are waiting for a task to be assigned and can resume many times.
-	- Why? A JVM creating and destroying too many threads can consume more time in creating and destroying resources that in the actual task.
+	- Why? A JVM creating and destroying too many threads can consume more time in creating and destroying resources than in the actual task.
 	- To avaoid that, A thread from the thread pool is pulled out and assigned a job by a "Service Provider" or a "Executor".
 	- After completion of the job, thread is contained in the thread pool again.
 	

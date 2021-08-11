@@ -78,7 +78,14 @@ Thread Pool:
 	- Executor allows to take advantage of threadpool and focus on task to perform instead of thread mechanics
 	- Java provides executer framework.
 	- Executor Interface ----> ExecutorService Interface  ------> ThreadPoolExecutor class
-	- implement the runnable objects and send them to executor to execute.
+
+	- 1. The Executors factory class is used to create an instance of an Executor, either an ExecutorService or an ScheduledExecutorService
+		e.g. ExecutorService executorService = Executors.newFixedThreadPool(5); - will return a ExceuterService that has a thread pool with fixed no of threads
+	- 2. The execute method of ExceutorService takes a Runnable and is useful when you want to run a task and are not concerned about checking its status or obtaining a result.
+		e.g. executorService.execute(new Runnable());
+	
+	- 3. The Runnable will be executed as soon as a thread is available from the ExecutorService thread pool.
+	- 4. shuting down the Executor Service. executorService.shutdown(); 
 	
 Risk in using ThreadPools:
 	- Deadlock: Threadpools can cause a case of deadlock scenario in which some thread is waiting for a thread, but this task is in queue because of unavailability of thread in the pool.

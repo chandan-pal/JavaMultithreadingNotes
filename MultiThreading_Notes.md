@@ -1,14 +1,13 @@
-- concurrent execution of two or more parts of a program for maximum utilization of CPU
-- In java each execution is called threads
+# concurrent execution of two or more parts of a program for maximum utilization of CPU. In java each execution is called threads
 
-- Threads can be created by:
+# Threads can be created by:
 	1. Extending thread class
 	2. Implementing the runnable interface
-- if we extend thread class, our class cannot extend any other class. But if we implement Runnable interface, our class can still extend base classes.
+- If we extend thread class, our class cannot extend any other class. But if we implement Runnable interface, our class can still extend base classes.
 - Thread class is the main class on which Java's Multithreading system is based.
 - Runnable interface is also used to create thread and should be used if planning to override only the run() method and no other Thread methods.
 
-Lifecycle of a Thread in Java:
+## Lifecycle of a Thread in Java:
 	1. New (a newly created thread, not yet ready for running)
 	2. Runnable (The thread is fully prepared for running or already running)
 	3. Blocked (The thread is temporarily inactive. The thread has to execute some protected code which is locked by some other thread)
@@ -29,13 +28,13 @@ Lifecycle of a Thread in Java:
 	
 	To get the current state of Thread: thread.getState();
 
-MAIN THREAD:
+## MAIN THREAD:
 	- The thread in which a java application starts/begins
 	- for each program a main thread is created by JVM
 	- The main thread first verifies the existence of main method and then it initializes the class.
 	- to obtain a reference of main thread: Thread.currentThread();
 
-YIELD, SLEEP & JOIN (methods on thread)
+## YIELD, SLEEP & JOIN (methods on thread)
 	yield():
 		- means that the thread is not doing anything particularly important and if any other thread or process need to run, they should run. Otherwise the current thred will run.
 		- it tells the Thread scheduler that this thread is ready to pause if needed
@@ -53,7 +52,7 @@ YIELD, SLEEP & JOIN (methods on thread)
 		- If any executing thread t1 calls join() on t2 i.e; t2.join() immediately t1 will enter into waiting state until t2 completes its execution
 
 
-WAIT, NOTIFY, NOTIFYALL (methods on object)
+## WAIT, NOTIFY, NOTIFYALL (methods on object)
 	All these methods belong to object class as final so that all classes have them. They must be used within a synchronized block only.
 	synchronized block ensures only one thread runniing at a time
 	wait():
@@ -63,7 +62,7 @@ WAIT, NOTIFY, NOTIFYALL (methods on object)
 	notifyAll():
 		- It wakes up all the threads that called wait on the same object.
 
-Thread Priority:
+## Thread Priority:
 	- Priority is the preference order for the thread scheduler to decide which thread to execute first.
 	- Thread priority is an integer with minimum of 1 and maximum of 10.
 	- 10 means max priority and 1 means minimum priority.
@@ -71,7 +70,7 @@ Thread Priority:
 	- Thread.setPriority(int newPriority)
 	- If two threads have same priority then we can’t expect which thread will execute first.
 	
-Thread Pool:
+## Thread Pool:
 	- A group of pre-created threads that are waiting for a task to be assigned and can resume many times.
 	- Why? A JVM creating and destroying too many threads can consume more time in creating and destroying resources than in the actual task.
 	- To avaoid that, A thread from the thread pool is pulled out and assigned a job by a "Service Provider" or a "Executor".
@@ -89,12 +88,12 @@ Thread Pool:
 	- 3. The Runnable will be executed as soon as a thread is available from the ExecutorService thread pool.
 	- 4. shuting down the Executor Service. executorService.shutdown(); 
 	
-Risk in using ThreadPools:
+## Risk in using ThreadPools:
 	- Deadlock: Threadpools can cause a case of deadlock scenario in which some thread is waiting for a thread, but this task is in queue because of unavailability of thread in the pool.
 	- Thread Leakage: Thread leakage occur when some thread was pulled for some task but it did not come back to the pool when the task was completed. E.g. if the thread throws an exception and the pool class did not catch this exception.
 	- Resource Thrashing: If the thread pool size is very large then the time is wasted in context switching between threads.
 
-CALLABLE & FUTURE:
+## CALLABLE & FUTURE:
 	- we have a Runnable interface to make thread classes in java, but with Runnable, we cannot make a thread return result when it terminates.
 	- For supporting this feature, Java provides Callable Interface.
 	- Callable can't create a thread, but it has call() method which can return result.

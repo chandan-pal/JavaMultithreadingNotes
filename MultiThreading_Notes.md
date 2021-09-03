@@ -1,4 +1,4 @@
-# concurrent execution of two or more parts of a program for maximum utilization of CPU. In java each execution is called threads
+# Concurrent execution of two or more parts of a program for maximum utilization of CPU. In java each execution is called threads
 
 # Threads can be created by:
 	1. Extending thread class

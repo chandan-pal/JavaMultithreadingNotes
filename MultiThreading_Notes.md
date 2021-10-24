@@ -60,6 +60,7 @@
 		- it tells the calling thread to give up lock and go to sleep until some other thread enters the same object and calls notify.
 	notify():
 		- It wakes up one single thread that called wait on the same object.
+		- If you use notify method, It's not guaranteed which thread will be informed.
 		- It should be noted that calling notify() does not actually give up a lock on a resource. It tells a waiting thread that that thread can wake up. However, the lock is not actually given up until the notifier’s synchronized block has completed.
 	notifyAll():
 		- It wakes up all the threads that called wait on the same object.

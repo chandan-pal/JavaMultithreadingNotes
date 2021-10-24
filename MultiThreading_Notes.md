@@ -110,3 +110,4 @@
 		1. A FutureTask can be created by providing its constructor with a callable.
 		2. Then the FutureTask object is provided to the constructor of Thread to create Thread object.
 		3. All interaction with the thread after that is with FutureTask object, and there is no need to store the thread object.
+	- https://www.geeksforgeeks.org/callable-future-java/

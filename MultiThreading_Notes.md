@@ -55,7 +55,7 @@
 
 ## WAIT, NOTIFY, NOTIFYALL (methods on object)
 	All these methods belong to object class as final so that all classes have them. They must be used within a synchronized block only.
-	synchronized block ensures only one thread runniing at a time
+	synchronized block ensures only one thread running at a time
 	wait():
 		- it tells the calling thread to give up lock and go to sleep until some other thread enters the same object and calls notify.
 	notify():

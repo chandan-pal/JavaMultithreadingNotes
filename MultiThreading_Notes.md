@@ -10,7 +10,7 @@
 
 ## Lifecycle of a Thread in Java:
 	1. New (a newly created thread, not yet ready for running)
-	2. Runnable (The thread is fully prepared for running or already running)
+	2. Runnable (The thread is fully prepared for running or already running - when thread.start() has been called)
 	3. Blocked (The thread is temporarily inactive. The thread has to execute some protected code which is locked by some other thread)
 	4. Waiting (The thread is temporarily inactive. The thread is waiting for some other thread on condition)
 		A thread can be put in waiting state by calling:

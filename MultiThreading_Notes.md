@@ -110,8 +110,9 @@
 		1. A FutureTask can be created by providing its constructor with a callable.
 		2. Then the FutureTask object is provided to the constructor of Thread to create Thread object.
 		3. All interaction with the thread after that is with FutureTask object, and there is no need to store the thread object.
-	- https://www.geeksforgeeks.org/callable-future-java/
+	
 	- FutureTask has following imp methods:
 		1. public boolean cancel(boolean mayInterrupt): Used to stop the task. It stops the task if it has not started. If it has started, it interrupts the task only if mayInterrupt is true.
 		2. public Object get() throws InterruptedException, ExecutionException: Used to get the result of the task. If the task is complete, it returns the result immediately, otherwise it waits till the task is complete and then returns the result.
 		3. public boolean isDone(): Returns true if the task is complete and false otherwise
+[https://www.geeksforgeeks.org/callable-future-java/](https://www.geeksforgeeks.org/callable-future-java/)

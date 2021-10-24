@@ -5,6 +5,7 @@
 	2. Implementing the runnable interface
 - If we extend thread class, our class cannot extend any other class. But if we implement Runnable interface, our class can still extend base classes.
 - Thread class is the main class on which Java's Multithreading system is based.
+- Thread class also implements Runnable interface.
 - Runnable interface is also used to create thread and should be used if planning to override only the run() method and no other Thread methods.
 
 ## Lifecycle of a Thread in Java:

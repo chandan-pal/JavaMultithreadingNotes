@@ -122,3 +122,21 @@ https://techblogstation.com/java/thread-pool-size/
 
 ## Difference between Java Threads and OS Threads
 https://www.geeksforgeeks.org/difference-between-java-threads-and-os-threads/#
+
+## Green Thread Model and Native Thread Model
+### Green Thread Model
+	- In this model threads are completely managed by JVM without any kind of underlying OS support.
+	- These threads are implemented at the application level and managed in user space.
+	- They are also called cooperative (user-level) threads.
+	- Only one green thread can be processed at a time. Hence this model is considered the many-to-one model. Because of this, green threads can run on multi-core processors but cannot take advantage of multiple-cores.
+	- synchronization and resource sharing is easier for green threads and hence execution time is also less.
+	- Sun Solaris OS provides support for Green Thread model.
+	- Java no longer user Green Thread model but uses Native thread model from Java 1.3
+### Native Thread Model
+	- Thread is this model are managed by the JVM with the help of underlying OS support.
+	- These threads are implemented ate the OS level (by using OS multithreading API) and managed in kernel space.
+	- They are also called non-green (kernel-level) threads.
+	- Mutliple threads can co-exist. Therefore it is also called many-to-many model. Such characteristic of this model allows it to take complete advantage of multiple-core processors and execute threads on separate individuals cores concurrently.
+	- Since this model allows multiple threads to be executed simultaneously, thread synchronization and resource sharing become complicated. This increases execution time of threads.
+	- All the windows based OS provide support for native thread model.
+The Green Thread model is deprecated and no longer used. Native Thread model has replaced Green Thread model and it is used widely today.

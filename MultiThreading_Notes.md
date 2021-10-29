@@ -116,3 +116,9 @@
 		2. public Object get() throws InterruptedException, ExecutionException: Used to get the result of the task. If the task is complete, it returns the result immediately, otherwise it waits till the task is complete and then returns the result.
 		3. public boolean isDone(): Returns true if the task is complete and false otherwise
 [https://www.geeksforgeeks.org/callable-future-java/](https://www.geeksforgeeks.org/callable-future-java/)
+
+## deciding factors for number of thread pools
+https://techblogstation.com/java/thread-pool-size/
+
+## Difference between Java Threads and OS Threads
+https://www.geeksforgeeks.org/difference-between-java-threads-and-os-threads/#

@@ -7,6 +7,8 @@
 - Thread class is the main class on which Java's Multithreading system is based.
 - Thread class also implements Runnable interface.
 - Runnable interface is also used to create thread and should be used if planning to override only the run() method and no other Thread methods.
+- When we extend the Thread class, each of the thread creates a unique object associated with it. Whereas in
+Runnable interface, the same Runnable Object can be shared by multiple threads
 
 ## Lifecycle of a Thread in Java:
 	1. New (a newly created thread, not yet ready for running)

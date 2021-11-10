@@ -152,7 +152,7 @@ public class CountDownLatchDemo
   
         // creation of dependent threads
 	// these worker thread are taking a parameter of the cyclicBarrier and they would call await() after finishing their task.
-	// latch.countDown(); will be called inside worker threads
+	// cyclicBarrier.await(); will be called inside worker threads
         MyWorkerThread first = new MyWorkerThread(1000, cyclicBarrier, "WORKER-1"); 
         MyWorkerThread second = new MyWorkerThread(2000, cyclicBarrier, "WORKER-2");
         MyWorkerThread third = new MyWorkerThread(3000, cyclicBarrier,  "WORKER-3");

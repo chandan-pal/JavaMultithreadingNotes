@@ -74,6 +74,63 @@ Runnable interface, the same Runnable Object can be shared by multiple threads
 	- Thread.getPriority()
 	- Thread.setPriority(int newPriority)
 	- If two threads have same priority then we can’t expect which thread will execute first.
+
+# java.util.concurrent API
+
+## Blocking Queue
+The Java BlockingQueue interface, **java.util.concurrent.BlockingQueue**, represents a queue which is thread safe to put elements into, and take elements out of from. In other words, multiple threads can be inserting and taking elements concurrently from a Java BlockingQueue, without any concurrency issues arising.
+
+A blocking queue is a queue that blocks when you try to dequeue from it and the queue is empty, or if you try to enqueue items to it and the queue is already full. A thread trying to dequeue from an empty queue is blocked until some other thread inserts an item into the queue. A thread trying to enqueue an item in a full queue is blocked until some other thread makes space in the queue, either by dequeuing one or more items or clearing the queue completely.
+
+Use Java ‘BlockingQueue’ instead of using ‘wait/notify’. BlockingQueue supports operations that wait for the space to becoming available in the queue when storing an element and wait for the queue to become non-empty when retrieving an element.
+
+## CountDownLatch
+A synchronization aid that allows one or more threads to wait until a set of operations are being performed.
+
+This class enables a java thread to wait until other set of threads completes their tasks. eg. Application’s main thread want to wait, till other service threads which are responsible for starting framework services have completed started all services.
+
+CountDownLatch works by having a counter initialized with number of threads, which is decremented each time a thread complete its execution. When count reaches to zero, it means all threads have completed their execution, and thread waiting on latch resume the execution.
+
+Pseudo code for CountDownLatch can be written like this :
+	//Main thread start
+	//Create CountDownLatch for N threads
+	//Create and start N threads
+	//Main thread wait on latch
+	//N threads completes there tasks are returns
+	//Main thread resume execution
+
+Some practical usage of CountDownLatch
+1. Achieving maximum parallelism
+2. wait N threads to before starting execution of any specific task
+3. Deadlock detection
+
+```
+public class CountDownLatchDemo
+{
+    public static void main(String args[]) 
+                   throws InterruptedException
+    {
+        // creation of countdown latch in main thread
+        CountDownLatch latch = new CountDownLatch(3);  // countdown latch initialized with 3
+  
+        // creation of dependent threads
+        MyWorkerThread first = new MyWorkerThread(1000, latch, "WORKER-1"); // these worker thread are taking a parameter of the coutdown latch and they would decrease the countdown. // latch.countDown();
+        MyWorkerThread second = new MyWorkerThread(2000, latch, "WORKER-2");
+        MyWorkerThread third = new MyWorkerThread(3000, latch,  "WORKER-3");
+        
+	// start the worker threads
+        first.start();
+        second.start();
+        third.start();
+
+        // The main task waits for four threads
+        latch.await();
+  
+        // Main thread has started
+        System.out.println(Thread.currentThread().getName() +  " has finished");
+    }
+}
+```
 	
 ## Thread Pool:
 	- A group of pre-created threads that are waiting for a task to be assigned and can resume many times.

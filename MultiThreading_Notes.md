@@ -92,12 +92,12 @@ This class enables a java thread to wait until other set of threads completes th
 CountDownLatch works by having a counter initialized with number of threads, which is decremented each time a thread complete its execution. When count reaches to zero, it means all threads have completed their execution, and thread waiting on latch resume the execution.
 
 Pseudo code for CountDownLatch can be written like this :
-	- //Main thread start
-	- //Create CountDownLatch for N threads
-	- //Create and start N threads
-	- //Main thread wait on latch
-	- //N threads completes there tasks are returns
-	- //Main thread resume execution
+- //Main thread start
+- //Create CountDownLatch for N threads
+- //Create and start N threads
+- //Main thread wait on latch
+- //N threads completes there tasks are returns
+- //Main thread resume execution
 
 Some practical usage of CountDownLatch
 1. Achieving maximum parallelism

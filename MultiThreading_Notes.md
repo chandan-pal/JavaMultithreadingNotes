@@ -104,7 +104,7 @@ Some practical usage of CountDownLatch
 2. wait N threads to before starting execution of any specific task
 3. Deadlock detection
 
-```
+```java
 public class CountDownLatchDemo
 {
     public static void main(String args[]) 

@@ -133,6 +133,44 @@ public class CountDownLatchDemo
     }
 }
 ```
+
+## CyclicBarrier
+CyclicBarrier is used to make threads wait for each other. It is used when different threads process a part of the computation and when all threads have completed the execution, the results need to be combined in the parent thread.
+
+After completing its execution, threads call await() method and wait for other threads to reach the barrier.
+
+The constructor for a CyclicBarrier is simple. It takes a single integer that denotes the number of threads that need to call the await() method on the barrier instance to signify reaching the common execution point.
+
+```java
+public class CountDownLatchDemo
+{
+    public static void main(String args[]) 
+                   throws InterruptedException
+    {
+        // creation of CyclicBarrier in main thread
+        CyclicBarrier  cyclicBarrier  = new CyclicBarrier(3);  // CyclicBarrier initialized with 3
+  
+        // creation of dependent threads
+	// these worker thread are taking a parameter of the cyclicBarrier and they would call await() after finishing their task.
+	// latch.countDown(); will be called inside worker threads
+        MyWorkerThread first = new MyWorkerThread(1000, cyclicBarrier, "WORKER-1"); 
+        MyWorkerThread second = new MyWorkerThread(2000, cyclicBarrier, "WORKER-2");
+        MyWorkerThread third = new MyWorkerThread(3000, cyclicBarrier,  "WORKER-3");
+        
+	// start the worker threads
+        first.start();
+        second.start();
+        third.start();
+	
+  
+        // Main thread has started
+        System.out.println(Thread.currentThread().getName() +  " has finished");
+    }
+}
+```
+
+### Use synchronizers, such as ‘CountdownLatch’ and ‘CyclicBarrier’ instead of directly using ‘join’.
+
 	
 ## Thread Pool:
 	- A group of pre-created threads that are waiting for a task to be assigned and can resume many times.

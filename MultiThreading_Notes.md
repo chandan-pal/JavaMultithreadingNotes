@@ -114,7 +114,9 @@ public class CountDownLatchDemo
         CountDownLatch latch = new CountDownLatch(3);  // countdown latch initialized with 3
   
         // creation of dependent threads
-        MyWorkerThread first = new MyWorkerThread(1000, latch, "WORKER-1"); // these worker thread are taking a parameter of the coutdown latch and they would decrease the countdown. // latch.countDown();
+	// these worker thread are taking a parameter of the coutdown latch and they would decrease the countdown.
+	// latch.countDown(); will be called inside worker threads
+        MyWorkerThread first = new MyWorkerThread(1000, latch, "WORKER-1"); 
         MyWorkerThread second = new MyWorkerThread(2000, latch, "WORKER-2");
         MyWorkerThread third = new MyWorkerThread(3000, latch,  "WORKER-3");
         

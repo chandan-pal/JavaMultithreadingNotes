@@ -171,6 +171,20 @@ public class CountDownLatchDemo
 
 ### Use synchronizers, such as ‘CountdownLatch’ and ‘CyclicBarrier’ instead of directly using ‘join’.
 
+
+# Non-Blocking Data Structures
+## Obstruction-Free
+A data structure/algorithm provides obstruction freedom if, a thread is guaranteed to proceed if all other threads are suspended. (A thread is guaranteed to proceed if there are no obstructions)
+i.e. if an algorithm is not obstruction free and two thread try to access the same data structure then the progress of both the threads would get stopped.
+
+All lock-free algorithms are obstruction-free.
+
+## Lock-Free
+A data structure provides Lock Freedom if, at any time, at-least one thread can proceed.
+
+## Wait-Free
+A data structure is wait-free if it's lock-free and every thread is guaranteed to proceed after a finite number of steps.
+
 	
 ## Thread Pool:
 	- A group of pre-created threads that are waiting for a task to be assigned and can resume many times.

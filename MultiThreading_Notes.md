@@ -253,3 +253,13 @@ https://www.geeksforgeeks.org/difference-between-java-threads-and-os-threads/#
 	- Since this model allows multiple threads to be executed simultaneously, thread synchronization and resource sharing become complicated. This increases execution time of threads.
 	- All the windows based OS provide support for native thread model.
 The Green Thread model is deprecated and no longer used. Native Thread model has replaced Green Thread model and it is used widely today.
+
+
+## The famous producer-consumer problem
+To make sure that the producer won’t try to add data into the buffer if it’s full and that the consumer won’t try to remove data from an empty buffer.
+
+Solution -
+	- The producer is to either go to sleep or discard the data if the buffer is full. The next time consumer removes an item from buffer, it notifies the producer
+	- In the same way consumer can go to sleep if it finds the buffer to be empty. The next time the producer puts data into buffer, it wakes up the sleeping consumer.
+	
+We can use BlockingQueue to easily solve this problem

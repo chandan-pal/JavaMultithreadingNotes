@@ -261,5 +261,7 @@ To make sure that the producer won’t try to add data into the buffer if it’s
 Solution -
 	- The producer is to either go to sleep or discard the data if the buffer is full. The next time consumer removes an item from buffer, it notifies the producer
 	- In the same way consumer can go to sleep if it finds the buffer to be empty. The next time the producer puts data into buffer, it wakes up the sleeping consumer.
-	
-We can use BlockingQueue to easily solve this problem
+
+https://www.geeksforgeeks.org/producer-consumer-solution-using-threads-java/
+
+* We can use BlockingQueue to easily solve this problem

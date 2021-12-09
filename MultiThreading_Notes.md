@@ -86,7 +86,7 @@ Solution :
 
 https://www.geeksforgeeks.org/producer-consumer-solution-using-threads-java/
 
-* We can use BlockingQueue to easily solve this problem
+* We can also use BlockingQueue to easily solve this problem
 
 
 # java.util.concurrent API

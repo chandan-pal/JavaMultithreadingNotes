@@ -75,6 +75,20 @@ Runnable interface, the same Runnable Object can be shared by multiple threads
 	- Thread.setPriority(int newPriority)
 	- If two threads have same priority then we can’t expect which thread will execute first.
 
+
+
+## The famous producer-consumer problem
+To make sure that the producer won’t try to add data into the buffer if it’s full and that the consumer won’t try to remove data from an empty buffer.
+
+Solution -
+		- The producer is to either go to sleep or discard the data if the buffer is full. The next time consumer removes an item from buffer, it notifies the producer
+		- In the same way consumer can go to sleep if it finds the buffer to be empty. The next time the producer puts data into buffer, it wakes up the sleeping consumer.
+
+https://www.geeksforgeeks.org/producer-consumer-solution-using-threads-java/
+
+* We can use BlockingQueue to easily solve this problem
+
+
 # java.util.concurrent API
 
 ## Blocking Queue
@@ -254,14 +268,3 @@ https://www.geeksforgeeks.org/difference-between-java-threads-and-os-threads/#
 	- All the windows based OS provide support for native thread model.
 The Green Thread model is deprecated and no longer used. Native Thread model has replaced Green Thread model and it is used widely today.
 
-
-## The famous producer-consumer problem
-To make sure that the producer won’t try to add data into the buffer if it’s full and that the consumer won’t try to remove data from an empty buffer.
-
-Solution -
-	- The producer is to either go to sleep or discard the data if the buffer is full. The next time consumer removes an item from buffer, it notifies the producer
-	- In the same way consumer can go to sleep if it finds the buffer to be empty. The next time the producer puts data into buffer, it wakes up the sleeping consumer.
-
-https://www.geeksforgeeks.org/producer-consumer-solution-using-threads-java/
-
-* We can use BlockingQueue to easily solve this problem

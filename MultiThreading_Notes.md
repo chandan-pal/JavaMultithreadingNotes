@@ -80,9 +80,9 @@ Runnable interface, the same Runnable Object can be shared by multiple threads
 ## The famous producer-consumer problem
 To make sure that the producer won’t try to add data into the buffer if it’s full and that the consumer won’t try to remove data from an empty buffer.
 
-Solution -
-		- The producer is to either go to sleep or discard the data if the buffer is full. The next time consumer removes an item from buffer, it notifies the producer
-		- In the same way consumer can go to sleep if it finds the buffer to be empty. The next time the producer puts data into buffer, it wakes up the sleeping consumer.
+Solution :
+- The producer is to either go to sleep or discard the data if the buffer is full. The next time consumer removes an item from buffer, it notifies the producer
+- In the same way consumer can go to sleep if it finds the buffer to be empty. The next time the producer puts data into buffer, it wakes up the sleeping consumer.
 
 https://www.geeksforgeeks.org/producer-consumer-solution-using-threads-java/
 

@@ -186,6 +186,23 @@ public class CountDownLatchDemo
 ### Use synchronizers, such as ‘CountdownLatch’ and ‘CyclicBarrier’ instead of directly using ‘join’.
 
 
+## Lock (java.util.concurrent.locks.Lock)
+- thread synchronization mechanism similar to synchronized blocks. 
+- more flexible and provide more options than a synchronized block.
+
+differences between lock and synchronized block
+- synchronized block does not guarantee of sequence in which waiting thread will be given access. with Lock interface we can handle it by specifying the fairness property.
+- sunchronized block has no option of timeout if lock is not granted. Lock option provides such option.
+- synchronized block must be fully contained in a single method whereas Lock's interface methods lock() and unlock() can be called in different method.
+
+* **void lock()** – acquire the lock if it's available; if the lock isn't available a thread gets blocked until the lock is released
+* **void lockInterruptibly()** – this is similar to the lock(), but it allows the blocked thread to be interrupted and resume the execution through a thrown java.lang.InterruptedException
+* **boolean tryLock()** – this is a non-blocking version of lock() method; it attempts to acquire the lock immediately, return true if locking succeeds
+* **boolean tryLock(long timeout, TimeUnit timeUnit)** – this is similar to tryLock(), except it waits up the given timeout before giving up trying to acquire the Lock
+* **void unlock()** – unlocks the Lock instance
+
+**ReentrantLock** an implementation of Lock interface which allows a thread to lock a method even if it already have the lock on other method.
+
 # Non-Blocking Data Structures
 ## Obstruction-Free
 A data structure/algorithm provides obstruction freedom if, a thread is guaranteed to proceed if all other threads are suspended. (A thread is guaranteed to proceed if there are no obstructions)

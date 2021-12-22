@@ -156,7 +156,7 @@ After completing its execution, threads call await() method and wait for other t
 The constructor for a CyclicBarrier is simple. It takes a single integer that denotes the number of threads that need to call the await() method on the barrier instance to signify reaching the common execution point.
 
 ```java
-public class CountDownLatchDemo
+public class CyclicBarrierDemo
 {
     public static void main(String args[]) 
                    throws InterruptedException
@@ -185,6 +185,9 @@ public class CountDownLatchDemo
 
 ### Use synchronizers, such as ‘CountdownLatch’ and ‘CyclicBarrier’ instead of directly using ‘join’.
 
+## Difference between countdownLatch and cyclicBarrier
+- counttown latch is to wait on number of tasks (the number of time the countdown() method has been called)
+- cyclicBarrier is to wait on threads i.e. the no of threds on which await() method has been called)
 
 ## Lock (java.util.concurrent.locks.Lock)
 - thread synchronization mechanism similar to synchronized blocks. 

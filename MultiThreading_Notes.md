@@ -288,3 +288,35 @@ https://www.geeksforgeeks.org/difference-between-java-threads-and-os-threads/#
 	- All the windows based OS provide support for native thread model.
 The Green Thread model is deprecated and no longer used. Native Thread model has replaced Green Thread model and it is used widely today.
 
+## ThreadLocal
+ThreadLocal allows to store data that will be accessible only by a specific thread
+e.g ``` ThreadLocal<Integer> threadLocalValue = new ThreadLocal<>(); threadLocalValue.set(1);
+Integer result = threadLocalValue.get(); threadLocal.remove(); ```
+
+## CompletebleFuture
+CompletableFuture<T> implements **Future<T>**. It can be used as a future which is explicitly completed .
+A Future is used as a reference to the result of an asynchronous computation. It provides an isDone() method to check whether the computation is done or not, and a get() method to retrieve the result of the computation when it is done.
+
+	
+- CompletableFuture can be cmpleted manually
+- Future cannot be manually completed
+- Future does not have the ability to attach callback function which can get called when the future's result is available.
+- Multiple Futures can not be chained together.
+- Future does not provide exception handling.
+	
+	
+```java
+CompletableFuture<String> completableFuture = CompletableFuture.supplyAsync(new Supplier<String>() {
+	@Overridde
+	public void run() {
+		try {
+			TimeUnit.SECONDS.sleep(1);
+			return "Return from Completable Future";
+		} catch (InterruptedException e) {
+			e.printStacktrace();
+		}
+	}
+});
+String result = completableFuture.get(); // to get the result
+completableFuture.complete("Future's Result") // to manually complete
+```

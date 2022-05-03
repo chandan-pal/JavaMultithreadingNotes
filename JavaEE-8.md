@@ -25,4 +25,18 @@ Java will be transafering all Java EE code base to Eclipse foundation.
 - Java EE is influenced by Spring Framework
 - Spring Boot is influenced by Java EE
 
+-------------------------------------------
+
+# Java EE - CDI
+Context and Dependency Injection
+
+- Denpendency Injection is a software paradigm where indivual components have there dependencies supplied to them, instead of creating them themshelves.
+- Dependency Injection is a specific form of inversion of control.
+
+## CDI Features
+1. TypeSafe Dependency
+2. Lifecycle contexts
+3. Interceptors
+4. Events
+5. Service Provider Interface
 

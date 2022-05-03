@@ -40,3 +40,64 @@ Context and Dependency Injection
 4. Events
 5. Service Provider Interface
 
+## Bean discovery modes
+Bean discovery - The mechanism by which the dependency injection runtime analyzes and discovers beans to manage.
+
+1. annotated - the beans that are annotated with certain CDI annotations will be eligible for management.
+2. all - every single bean that is created in the application are eligible for bean discovery and management.
+
+
+## CDI Container
+A kind of black box that takes control of the dependency management in the JAVA-EE application.
+It allows to manage lifecycle of stateful components via domain-specific lifecycle contexts and inject components in a type-safe way.T
+The container is responsible for managing the lifecycle of beans.
+CDI container also manages the context in the beans are created and injected.
+
+## Bean & Contextual Instances
+A bean is a source of contextual objects that define application state and/or logic.
+- A Java EE component is a bean if the lifecycle of its instances may be managed by the container according to lifecycle context model defined in the CDI specification.
+
+A Contextual instance is an instance of a bean.
+- A bean can be considered a template of contextual instances.
+
+
+## CDI Injection Points
+The point at which the CDI container can inject the dependency.
+1. **Field Injection** : Injection takes place at a field.
+
+```java
+@Web
+public class ScopesBean implements serializable {
+  @Inject
+  private RequestScope requestScope;
+}
+```
+
+2. **Constructor Injection** : dependency injection takes place at constructor of the bean
+```java
+@Web
+public class ScopesBean implements serializable {
+  
+  private RequestScope requestScope;
+  
+  @Inject
+  private ScopesBean(RequestScope requestScope) {
+    this.requestScope = requestScope;
+  }
+}
+```
+
+3. **Method Injection** : dependency injection at method call
+
+```java
+@Web
+public class ScopesBean implements serializable {
+  
+  private RequestScope requestScope;
+  
+  @Inject
+  private void setSessionScope (RequestScope requestScope) {
+    this.requestScope = requestScope;
+  }
+}
+```

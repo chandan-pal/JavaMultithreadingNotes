@@ -101,3 +101,31 @@ public class ScopesBean implements serializable {
   }
 }
 ```
+
+## CDI LifeCycle callbacks
+1. **@PostConstruct** : It tells the container to invoke this method after the construction of the instance.
+2. **@PreDestroy** : It tells the container to invoke this method before the bean is made available for garbage collection.
+
+## Qualifiers
+CDI Qualifier is a way to remove ambiguity and tell the container the specific type of dependency to be injected.
+
+When CDI inspects an injection point to find a suitable bean to inject, it takes not only the class type into account, but also qualifiers.
+- A qualifier is an anotation that can be applied to a bean.
+- default qualifier is **@Any**
+
+```java
+@Qualifier
+@Retention(RUNTIME)
+@Target({TYPE, METHOD, FIELD, PARAMETER})
+public @interface Informal {}
+
+package greetings;
+
+@Informal
+public class InformalGreeting extends Greeting {
+    public String greet(String name) {
+        return "Hi, " + name + "!";
+    }
+}
+```
+

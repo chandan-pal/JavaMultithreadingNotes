@@ -134,3 +134,12 @@ public class InformalGreeting extends Greeting {
 3. **@SessionScoped** : bound to an http session.
 4. **@ApplicationScoped** : bind contextual instanaces to the lifcycle context of the application.
 5. **@ConversationScoped** : manually managed by the developer
+
+
+## Producer Method
+A producer method generates an object that can then be injected.
+Typical usecases - 
+- when you want to inject an object that is not itself a bean.
+- When the concrete type of the object to be injected nay vary at runtime.
+- When object requires some custom initialization that the bean constructor does not perform.
+- 

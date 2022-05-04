@@ -128,4 +128,9 @@ public class InformalGreeting extends Greeting {
     }
 }
 ```
-
+## Context and Scopes
+1. **@Dependent** : default scope. make the bean dependent on the context in which the bean is injected.
+2. **@RequestScoped** : bound to HTTP request scope. every http request, a new contextual instance would be created.
+3. **@SessionScoped** : bound to an http session.
+4. **@ApplicationScoped** : bind contextual instanaces to the lifcycle context of the application.
+5. **@ConversationScoped** : manually managed by the developer

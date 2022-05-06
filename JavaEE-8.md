@@ -142,4 +142,50 @@ Typical usecases -
 - when you want to inject an object that is not itself a bean.
 - When the concrete type of the object to be injected nay vary at runtime.
 - When object requires some custom initialization that the bean constructor does not perform.
-- 
+
+```java
+@Produces
+@Chosen
+@RequestScoped
+public Coder getCoder(@New TestCoderImpl tci,
+        @New CoderImpl ci) {
+
+    switch (coderType) {
+        case TEST:
+            return tci;
+        case SHIFT:
+            return ci;
+        default:
+            return null;
+    }
+}
+
+
+// use
+@Inject
+@Chosen
+@RequestScoped
+Coder coder;
+```
+
+## Producer Field
+A producer field is simpler alternative to producer method. It is field of a bean that generates an object.
+- It can be used `instead of simple getter method.
+- Producer fields are uselful for declaring Java EE resources such as data sources, JMS resources, and web service references.
+
+## Disposer method
+A disposer methods task is to remove an object if its task is complete.
+```java
+@PersistenceContext
+private EntityManager em;
+
+@Produces
+@UserDatabase
+public EntityManager create() {
+    return em;
+}
+
+public void close(@Disposes @UserDatabase EntityManager em) {
+    em.close();
+}
+```

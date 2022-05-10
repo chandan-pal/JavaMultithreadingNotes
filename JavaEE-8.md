@@ -189,3 +189,4 @@ public void close(@Disposes @UserDatabase EntityManager em) {
     em.close();
 }
 ```
+- The disposer method is called automatically when the context ends.

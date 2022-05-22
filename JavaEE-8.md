@@ -190,3 +190,49 @@ public void close(@Disposes @UserDatabase EntityManager em) {
 }
 ```
 - The disposer method is called automatically when the context ends.
+
+## CDI Interceptors
+A interceptor is a class used to interpose in **method invocations** or **lifecycle events** (like postConstruct, preDestory) that occur in an association **target** class.
+Use cases such as logging or auditing, **cross-cutting** tasks that are separate from business logic and are repeated often.
+- Interceptors allow to specify the code for cross-cutting tasks in one place for easy maintenance.
+- An interceptor can be defined within a target class as an **interceptor method**, or in associated class called **interceptor class**
+- An interceptor class can contain more than one method, but it must not have more than one method for each type
+- An interceptor class must have a public no-arg constructor
+- The target class can have any number of interceptor method annotated with it. The order in which the interceptor methods are invoked is determined by the order in which the interceptor classed are defined in the @Interceptors annotation. e.g @Interceptors({PrimaryInterceptor.class, SecondaryInterceptor.class})
+
+```java
+@Stateless
+@Interceptors({PrimaryInterceptor.class, SecondaryInterceptor.class})
+public class TimerBean {
+...
+    @Schedule(minute="*/1", hour="*")
+    public void automaticTimerMethod() { ... }
+
+    @AroundTimeout
+    public void timeoutInterceptorMethod(InvocationContext ctx) { ... }
+...
+}
+```
+
+Interceptor Metadata annotations
+
+| Annotation | Description |
+| ----- | ------ |
+| javax.interceptor.AroundInvoke | Designates the method as an interceptor method |
+| javax.interceptor.AroundTimeout | method as a timeout interceptor, for interposing on timeout methods of enterprise bean timers |
+| javax.annotation.PostConstruct | interceptor method for post construct lifecycle events |
+| javax.annotation.PreDestory | interceptor method for pre destory lifecycle events |
+
+- Along with interceptor, an application defines one or more **interceptor biniding** (annotations that associate interceptor with target bean or methods.
+```java
+@Inherited
+@InterceptorBinding
+@Retention(RUNTIME)
+@Target({METHOD, TYPE})
+public @interface Logged {
+}
+
+@Logged
+@SessionScoped
+public class PaymentHandler implements Serializable {...}
+```

@@ -236,3 +236,65 @@ public @interface Logged {
 @SessionScoped
 public class PaymentHandler implements Serializable {...}
 ```
+
+## CDI Events
+One of the best feature of CDI is event mechanism.
+With event mechansim we can fire events, configure single/multiple event observers(listeners) which can perform some after task for the event. before CDI 2.0 events were synchronus, but with CDI 2.0 event can be asynchronus too.
+
+This allows the application components to be more loosely coupled.
+
+- Event interface is in package javax.enterprise.event.
+
+### Event Types
+1. SimpleEvent - When a simple evnt is fired, all the subscribers/listeners will recieve a notification for the event. In short, all the listeners will be fired.
+```java
+@Named
+public class EventSource {
+
+    @Inject
+    private Event<String> simpleMessageEvent;  // the CDI compiler takes care of injecting an event implementation.
+
+    public void fireEvent(){
+       simpleMessageEvent.fire("Hello");  // this statement publishes a new event with a String payload
+    }
+
+}
+
+```
+2. QualifyingEvent - Event qualifying event, Event observers can decide, ehich event they want to listen to. This is achieved by CDI Qualifier.
+```java
+
+// defining a qualifier
+@Qualifier
+@Retention(RUNTIME)
+@Target({METHOD, FIELD, PARAMETER, TYPE})
+public @interface SpecialEvent {
+
+}
+
+
+// firing an event with Qualifier
+@Named
+public class SelectedEventSource {
+
+    @Inject
+    @SpecialEvent
+    private Event<String> specialEvent;
+
+    public void fireEvent(){
+      specialEvent.fire("Hello");
+    }
+
+}
+
+
+// listener which only wants to listen to special event
+@Named
+public class SpecialEventObserver {
+
+    public void observeImportantMessage(@Observes @SpecialEvent String message){
+      System.out.println(message);
+    }
+
+}
+```

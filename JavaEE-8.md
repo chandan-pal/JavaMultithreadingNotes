@@ -298,3 +298,40 @@ public class SpecialEventObserver {
 
 }
 ```
+
+
+### Transactions & Events
+Normally events are executed in the same transactions in which the event was fired. But if any observer wants to receive the event only if the transaction ended up in certain state, it can also be achieved in CDI.
+
+the @Observes annotation has a field named during. This field accepts **javax.enterprise.event.TransactionPhase** enum.
+
+```java
+@Named
+public class TransactionEventObserver {
+
+    // this observer will be notified only if the transaction ends successfully.
+    public void observeImportantMessage(@Observes(during = TransactionPhase.AFTER_SUCCESS) String message){
+      System.out.println(message);
+    }
+}
+```
+
+The TransactionPhase enums - IN_PROGRESS, BEFORE_COMPLETION, AFTER_COMPLETION, AFTER_FAILURE, AFTER_SUCCESS
+
+
+### Event Reception
+In a situation when an event is fired, but the observer resides in a bean with no living instance, there are two scenarios possible.
+1. CDI created the instances and delivers the event to the observer (Reception.ALWAYS)
+2. The event is not delivered (Reception.IF_EXISTS)
+
+By default Reception.ALWAYS is active.
+
+This can be configured for each observer by means of a **notifyObserver** attribute of @Observes annotation.
+```java
+Named
+public class EventObserver {
+    public void observeEvent(@Observes(notifyObserver = Reception.IF_EXISTS) String message){
+      System.out.println(message);
+    }
+}
+```

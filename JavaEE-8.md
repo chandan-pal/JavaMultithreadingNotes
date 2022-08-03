@@ -318,6 +318,8 @@ public class TransactionEventObserver {
 
 The TransactionPhase enums - IN_PROGRESS, BEFORE_COMPLETION, AFTER_COMPLETION, AFTER_FAILURE, AFTER_SUCCESS
 
+Default is IN_PROGRESS
+
 
 ### Event Reception
 In a situation when an event is fired, but the observer resides in a bean with no living instance, there are two scenarios possible.
@@ -332,6 +334,33 @@ Named
 public class EventObserver {
     public void observeEvent(@Observes(notifyObserver = Reception.IF_EXISTS) String message){
       System.out.println(message);
+    }
+}
+```
+
+
+### Async Events
+CDI 2.0 allows to fire asynchronus events. Asynchronus observer methods can then handle these asynchronus events in different threads.
+
+To fire an asynchonus event - fireAsync method is to be used
+```java
+public class ExampleEventSource {
+    
+    @Inject
+    Event<ExampleEvent> exampleEvent;
+    
+    public void someMethod() {
+        exampleEvent.fireAsync(new ExampleEvent("Hello"));
+    }   
+}
+```
+
+to create an asynchronus observer - @ObservesAsync annotation is to be used
+```java
+public class AsynchronousExampleEventObserver {
+
+    public void onEvent(@ObservesAsync ExampleEvent event) {
+        // ... implementation
     }
 }
 ```

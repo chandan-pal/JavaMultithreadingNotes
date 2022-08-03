@@ -364,3 +364,18 @@ public class AsynchronousExampleEventObserver {
     }
 }
 ```
+
+### Observer Method Ordering
+CDI 2.0 allows ordering or prioritizing observers. We can define order in which the observer method will be called by defining **@Priority** annotation after @Observes.
+
+```java
+public String onEvent(@Observes @Priority(1) ExampleEvent event, TextService textService) {
+    // ... implementation
+}
+
+public String onEvent(@Observes @Priority(2) ExampleEvent event) {
+    // ... implementation
+}
+```
+
+Priority levels follow a natural ordering, therefore CDI will call first the observer method with priority level 1 and then priority level 2

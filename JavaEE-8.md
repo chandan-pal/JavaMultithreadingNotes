@@ -379,3 +379,45 @@ public String onEvent(@Observes @Priority(2) ExampleEvent event) {
 ```
 
 Priority levels follow a natural ordering, therefore CDI will call first the observer method with priority level 1 and then priority level 2
+
+
+## Java Persistent API (JPA)
+The Java Persistence API provides Java developers with an object/relational mapping facility for managing relational data in Java applications. 
+It is essentially a standard frmaework for object relattional mapping.
+Java Persistence consists of four areas:
+- The Java Persistence API
+- The query language
+- The Java Persistence Criteria API
+- Object/relational mapping metadata
+
+### JPA Entity
+the most atomic unit of JPA framework.
+A POJO can be annotated by @Entity annotation to make it a JPA entity. Every signle instance of an entity object maps to a row in the database.
+
+A JPA entity must have a unique identifier.
+
+- By default a JPA entity is mapped to a table with the class name. to cutomize the table mapping, @Table annotation can be used. e.g. @Table(name = "TABLE_NAME")
+
+- JPA Entity Using super class
+```
+@Entity
+@AttributeOverride(name="id", column = @Column(name="tax_id"))  // if the subclass wants to override any field of superclass
+public class Tax extends AbstractEntity {
+  
+  private BigDecimal taxRate;
+  
+}
+
+
+// super class
+@MappedSuperClass 
+public abstract class AbstractEntity implements Serializable {
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  protected Long id;
+  
+  protected String userEmail;
+  
+}
+```
+}

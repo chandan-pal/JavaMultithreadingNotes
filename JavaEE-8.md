@@ -406,6 +406,9 @@ public class Tax extends AbstractEntity {
   
   private BigDecimal taxRate;
   
+  @Basic
+  private String name;
+  
 }
 
 
@@ -420,4 +423,23 @@ public abstract class AbstractEntity implements Serializable {
   
 }
 ```
-}
+
+**@Basic** annotation on a field or property signifies that it is a basic type and JPA should use the standard mapping for it's persistance. It's an optional annotation.
+
+### JPA @Column annotation
+The @Column annotation is used to customize column mapping in database. The various attributes of @Column attributes are - 
+1. @Column (name = "name_of_column") - customize the column name in the database
+2. @Column (length=”varchar(255)/Integer 23) - adds column size of the particular column in the table.
+3. @Column(nullable=false) - adds the not-null constraint to the column of the table.
+
+### JPA Transient fields
+**@Transient** annotation on a field or property can be used to avoid mapping of the field to the database. That particular field will not be persisted in the database.
+
+### JPA Entity Field access types
+JPA defines two types of access.
+1. Field access - when the field value is directly used for persistance. Runtime access the field directly through reflection. In this case the field is annotated directly with JPA annotations @Column or @Id
+2. Getter access - with this the persistance container will use the value returned from the getter method for persistance. In this case the getter method is annotated with JPA annotations.
+
+
+### JPA MApping Enum Types
+By default enum are mapped to a column in the table 

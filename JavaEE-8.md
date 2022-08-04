@@ -442,4 +442,44 @@ JPA defines two types of access.
 
 
 ### JPA MApping Enum Types
-By default enum are mapped to a column in the table 
+By default enum are mapped to a column in the table and the ordinal value of the enum is stored in the database.
+```java
+public enum EmployementType {
+  FULL_TTIME, // 0
+  CONTRACT // 1
+}
+```
+With ordinal value being stored in the database, the problem is that we cannnot change the order of the enum constants. If the order is changed or a new constant is introduced in between, the the oridinal mapping in the database will become wrong.
+
+To avoid this we can use **@Enumerated(EnumType.String)** - by using this the actual constant will be stored in the database.
+
+### JPA Mapping Large Objects
+**@Lob** annotation is used to store large objets such as images.
+```
+@Lob
+@Basic(fetch = FetchType.LAZY). // do not fetch the field immediately, but will be fetched when the getter for that field is called.
+private byte[] image;
+```
+
+### JPA - Mapping Embeddable classes
+```java
+@Embeddable
+public class Address {
+  private String streetAddress;
+  private String city;
+  privtae String country;
+}
+
+@Entity
+public class Employee {
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
+  
+  @Embedded
+  private Address address;
+}
+```
+@Embeddable annotation is used to mark a class that do not has an idetity on its own, but can be embedded into other classes.
+@Embedded annotion is used mark the field to refer the embeddable class.
+

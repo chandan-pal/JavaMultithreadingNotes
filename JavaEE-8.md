@@ -1,7 +1,7 @@
 # Java EE - Java Enterprise Edition
 
 ## What is Java EE ?
-Java EE is a collection of Abstract specifications, soli=ving some of the common problems like Persistence, web services, transactions, security, loose coupling etc.
+Java EE is a collection of Abstract specifications, solving some of the common problems like Persistence, web services, transactions, security, loose coupling etc.
 
 ```java
 javax.* //package

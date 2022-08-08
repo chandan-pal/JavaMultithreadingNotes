@@ -529,3 +529,20 @@ public class Payslip {
   private Employee employee;
 }
 ```
+
+@ManyToMany - to map many to many relationship
+```java
+@Entity
+public class Project {
+  @ManyToMany // jpa creates a join table to manage the relatioship, so ownership is on the join table
+  @JoinTable(name="PROJ_EMPLOYEES", joinColumns = @JoinColumn(name="PROJ_ID"), inverseJoinColumns = @JoinColumn(name="EMP_ID") // customize the join table
+  private Collection<Employee> employees;
+}
+
+
+@Entity
+public class Employee {
+  @ManyToMany
+  private Collection<Project> projects;
+}
+```

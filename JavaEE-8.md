@@ -600,3 +600,51 @@ public class Department {
   private List<Employee> employees = new ArrayList<>();
 }
 ```
+
+### JPA - persisting key value pairs
+```java
+@Entity
+public class Employee {
+  @ElementCollection // creates a new table for mapping the Map
+  @CollectionTable(name = "PHONE_NUMBERS") // customize the secondary table
+  @MapKeyColumn(name="PHONE_TYPE") // customize the column that stores the key of the map
+  @Column(name="PHONE_NUM") // customize the value column
+  private Map<String, String> phoneNumbers;
+}
+
+
+// e.g. 2
+@Entity
+public class Employee {
+  @ElementCollection // creates a new table for mapping the Map
+  @CollectionTable(name = "PHONE_NUMBERS") // customize the secondary table
+  @MapKeyColumn(name="PHONE_TYPE") // customize the column that stores the key of the map
+  @Column(name="PHONE_NUM") // customize the value column
+  @MapKeyEnumerated(EnumType.STRING) // store enum key as string
+  private Map<PhoneType, String> phoneNumbers;
+}
+
+
+// e.g. 3
+@Entity
+public class Department {
+
+  // since the value is an entity, hence it will be relational mapping
+  @OneToMany // creates the join table to map the relationship
+  @MapKey(name="id") // tells the JPA that the key will be the id property of the value object.
+  private Map<Long, Employee> employees = new HashMap<>();
+}
+
+
+// e.g. 4
+@Entity
+public class Department {
+  @ElementCollection // since the value is a basic type
+  @CollectionTable(name = "EMP_RANKS")
+  @MapKeyJoinColumn(name="EMP_ID") // customize the join column in the collection table
+  @Column(name="RANK")
+  private Map<Employee, Integer> employeesRanks = new HashMap<>();
+}
+
+// In JPA, using Map with key as embeddable is discouraged.
+```

@@ -546,3 +546,36 @@ public class Employee {
   private Collection<Project> projects;
 }
 ```
+
+
+### JPA - Collection Mapping of Embeddable
+When an embeddable property is mapped in an entity @Embedded annotation, the owning table adds columns for all the attribute of the embeddable object
+```java
+@Embeddable
+public class Address {
+  private String street;
+  private String city;
+}
+
+@Entity
+public class Employee {
+  @Embedded // the columns for address will be created in the employee table.
+  private Address address;
+}
+```
+
+but when a collection of embeddable objects is to be mapped then **@ElementCollection** attribute can be used. This will create a secondary table for storing the embeddable object.
+```java
+@Embeddable
+public class Address {
+  private String street;
+  private String city;
+}
+
+@Entity
+public class Employee {
+  @ElementCollection // secondary table will be created to map the adress objects
+  @CollectionTable(name = "ADDRESS", joinColumns=@JoinColumn(name="EMP_ID")) // customize the secondary table
+  private Collection<Address> address;
+}
+```

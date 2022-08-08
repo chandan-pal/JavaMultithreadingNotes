@@ -483,3 +483,49 @@ public class Employee {
 @Embeddable annotation is used to mark a class that do not has an idetity on its own, but can be embedded into other classes.
 @Embedded annotion is used mark the field to refer the embeddable class.
 
+
+### JPA - Mapping Primary Keys
+1. Auto primary key generation - @GeneratedValue(strategy = GenerationType.AUTO) - persistent provider dependent
+2. Identity primary key generation - @GeneratedValue(strategy = GenerationType.IDENTITY) - underlying databse identity strategy
+3. sequence primary key generation - @SequenceGenerator(name="some_seq", sequenceName="some_seq_name") @GeneratedValue(generator="some_seq")
+4. Table primary key generation - @TableGenerator(name="Emp_Gen", table="ID_GEN". pkColumnName="GEN_NAME", valueColumnName="pk_value") @GeneratedValue(generator="Emp_Gen")
+
+
+### JPA Entity Relationaship Mapping
+**Directionality** : A direction in a relationship can be either bidirectional or unidirectional. A bidirectional relationship has both an owning side and an inverse side. A unidirectional relationship has only an owning side.
+
+The owning side of a relationship determines how the persistence runtime makes updates to the relationship in database.
+
+**Cardinality** : Cardinality refers to the maximum number of times an instance in one entity can relate to instances of another entity.
+
+**Ordinality** : Ordinality is the minimum number of times an instance in one entity can be associated with an instance in the related entity.
+
+@ManyToOne - to map many to one relationship.
+so in database the one table will have a reference (foreignKey) to primary key of the other table. The ownership of the relationship is determined by which table has the foreignKey column. In JPA this foreignKey column is called the joinColumn.
+
+```java
+@Entity
+public class Employee {
+  @ManyToOne
+  @JoinColumn(name="DEP_ID") // customize the foreign key column
+  private Department department;
+}
+```
+
+@OneToOne - to map one to one relationship
+
+e.g of bidirectional one to one mapping
+```java
+@Entity
+public class Employee {
+  @OneToOne(mappedBy = "employee") // tells jpa that Payslip is the owning side of the relationship
+  private Payslip payslip;
+}
+
+@Entity
+public class Payslip {
+  @OneToOne
+  @JoinColumn(name="EMP_ID")
+  private Employee employee;
+}
+```

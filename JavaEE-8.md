@@ -648,3 +648,37 @@ public class Department {
 
 // In JPA, using Map with key as embeddable is discouraged.
 ```
+
+
+## EJB - Enterprise Java Beans
+EJB is a server side software element that summarizes business logic of an application. EJB technology was created to standardize all elements of business logic code under a single interface. EJBs use container-based management to provide features like persistence, events, messaging, RPC, security, concurrency and transaction processing.
+
+Java EE considers following type of applications -
+| Web Application | EJB Application | Enterprise Application |
+| ------------- | ------------- | -------------------------- |
+| composed of JSP, HTML, CSS etc. | composed of Enterprise Java Beans (stateless, statefull, message driven) | kind of wrapper for Web Application and EJB application. |
+| the main purpose is representing the user interface layer | EJBs provide the tools needed for building the business logic layer | It can include many web application or EJB application |
+| WebContainers such as tomcat must provide a web container to deploy this kind of application | runs over EJB containers. Tomcat an't run EJB applications. TomEE is an example EJB container. | full Java EE application server like Glasfish, JBoss, Weblogic etc. is needed for deploying enterprise applications. |
+| The artifcat for deployment is a WAR archive. | The artifact for deployment is a JAR archive. | The artifact for deployment is an EAR file.|
+
+
+EJB 1.0 and 2.0 were considered confusing. It had took a limiting "all or nothing" approach to implementation. Because of this lightweight alternatives to EJB-functions were created, like Spring,, Hibernate, Google Guice etc.
+
+EJB 3.0 took a complete overhaul and mirros many features from the lightweight alternatives that had replaced it.
+
+### Features of EJB specification framework
+- Declarative Metadata
+- Configuration By Exception
+- Dependency Management (of EJB beans). CDI provides dependency management in general of any class or interface. EJB also has a feature of dependency management of EJB container managed beans. EJB does not involve context but CDI is contextual.
+```
+// both of the below statement are valid and does the same job.
+
+@EJB EJBService ejbService;
+@Inject EJBService ejbService;
+```
+
+- Lifecycle Management
+- Scalability
+- Transactionality
+- Security
+- Portability

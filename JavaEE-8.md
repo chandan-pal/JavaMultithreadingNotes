@@ -579,3 +579,24 @@ public class Employee {
   private Collection<Address> address;
 }
 ```
+
+### JPA - Ordering the contents of a persitable collection.
+**@OrderBy** annotation can be used - it adds order by clause to the generated SQL to order the members of the retrieved collection.
+```java
+@Entity
+public class Department {
+  @OneToMany(mappedBy="department")
+  @OrderBy("fullName ASC, dateOfBirth desc") // order first by fullName and then by dateOfBirth 
+  private List<Employee> employees = new ArrayList<>();
+}
+```
+
+**@OrderColumn** annotation - it adds an additional column in the table, containing the index of the entity in the list.
+```java
+@Entity
+public class Department {
+  @OneToMany(mappedBy="department")
+  @OrderColumn(name="EMPLOYEE_POS") //persist the position in the list to the table. this will be stored as an index in a new column called EMPLOYEE_POS
+  private List<Employee> employees = new ArrayList<>();
+}
+```

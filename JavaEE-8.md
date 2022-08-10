@@ -783,4 +783,35 @@ public class QueryService {
 
 
 ### Persistent Unit
-The persistent unit is the main configuration of entity classes. A Java EE may have many entity classes, and there may be a need to segregate these classes in to descrete units. Every descrete unit of these entity classes is 
+The persistent unit is the main configuration of entity classes. A Java EE may have many entity classes, and there may be a need to segregate these classes in to descrete units. Every descrete unit of these entity classes is defined in a persistent unit.
+
+### Persistence Context
+A persistent context is a set of entity instances in which for any persistent entity identity there is a unique identity instances. Within the persistent context, the entity instances and their lifecycle are managed.
+
+### Entity Manager
+The entity manager is an API hat manages the lifecycle of the entity instance. An EntityManager object manages a set of entities that are defined by a persistence unit. Each entity manager is associated with a persistent context.
+
+1. **EntityManager.persist()** - operation is used to insert a new object into the database. persist does not directly insert the object into database, it just registers the new object in the persistsence context. When the transaction is committed, or when the.persistence context is flushed, then the object will be inserted into the database.
+
+If the object uses a generated Id, it will normally be assigned when persist is called. But when IDENTITY sequencing is used then Id is only assigned on commit or flush.
+
+persist can only be called on entity objects and not on Embeddable objects. Embeddable objects are automatically persisted as part of their owning entity.
+
+calling persist is not always required. If new object relates to existing object in the persistence context, and the relationship is cascade persist, then it will automatically inserted when the transaction is committed or when the persistent context is flushed.
+
+
+2. **EntityManager.find()** - used to fretriev an entity defined. It returns null if entity is not found in the database. If the current persistence context contains the entity instance, it will be returned from there, otherwise a select query will be fired in the database.
+
+
+3. **EntityManager.remove()** - used to delete an object from the database. remove does not directly delete the object from the database, it marks the object to be deleted in the persistence context. When the transaction is committed, or if the persistence context is flushed, then the object will be deleted from the database.
+
+calling remove on an object will also cascade the remove operation across any relationship that is marked as cascade remove.
+
+
+4. **EntityManager.merge()** - is used to merge the changes made to a detached object into the persistence context. merge does not direcly update the changes to the database, it merges the changes into the persistence context.
+
+Normally merge is not required. To update an object you simply need to read it, then change the state through its setter methods, then commit the transaction.
+
+merge is only required when you have a detached copy of the persistence object. A detached cobject is one which was read through a different entity manager (or in a different transaction), or one that is cloned, or serialized.
+
+calling merge on an object will also cascade the merge operation across any relationship that is marked as cascade merge.

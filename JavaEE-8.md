@@ -727,8 +727,60 @@ public class ApplicationState {
 ```
 
 ### EJB Component lifecycle
-**@PostConstruct** : called when the bean has been instantiated and all the dependencies has been resolved.
+**@PostConstruct** : called when the bean has been instantiated and all the dependencies has been resolved.\
 **@PreDestroy** : called just before the bean is available for garbage collection.
 
-**@PrePassivate** : only for stateful beans. called just before the bean is hibernated.
+**@PrePassivate** : only for stateful beans. called just before the bean is hibernated.\
 **@PostActivate** : only for stateful beans. called after the bean is activated from passivation sate.
+
+
+## JPA - Transaction Management
+Transaction is an abstraction that is used to group togethere a series of opeation, that must all complete together or none should be allowed.
+properties of a transaction - 
+1. Atomicity - a transaction must be all-or-nothing
+2. Consistency - data must be in consistent state when a transaction starts and when it ends. 
+3. Isolation - the intermediate state of transaction must be invisibe to other transactions. As a result, transactions that run concurrently appear to be searialized.
+4. Durability - after a transaction successfully completes the changes to the data persist are not undone, even in the event of a system failure.
+
+
+### Bean managed transaction & Container managed transactions
+Container managed - when the task of transaction management is handeled by the container.
+```java
+@Stateless
+public class QueryService {
+  @Inject
+  EntityManager entityManager;
+  
+  public List<Employee> getEmployees() {
+  
+  }
+}
+```
+
+
+Bean managed - it means that the developer wants to take over the task of transaction managemet and wants to manually manage the transaction.
+```java
+@Stateless
+@TransactionManagement(TransactionManagementType.BEAN)
+public class QueryService {
+  @Inject
+  EntityManager entityManager;
+  
+  public List<Employee> getEmployees() {
+  
+  }
+}
+```
+
+### Transactions Management attributes
+**@TransactionAttribute** annotation
+@TransactionAttribute(TransactionAttribute.NEVER) - means the method should not run in a transaction. if a transaction is there, RemoteException is thrown.
+@TransactionAttribute(TransactionAttribute.MANDATORY) - a transaction is must to run the method. if a transaction is not there, a TransactionRequiredException is thrown
+@TransactionAttribute(TransactionAttribute.REQUIRED) - a transaction is must to run the method. If a transaction is not there, then container create a new transaction.
+@TransactionAttribute(TransactionAttribute.REQUIRES_NEW) - a new transaction is required to run the method. if there is already a transaction, then the container suspends the existing transaction and creates a new. The container resumes the existing transaction after the method is complete.
+@TransactionAttribute(TransactionAttribute.SUPPORTS) - transaction is not required to run the method. But if there is a transaction then also the method executes within a transaction. No new transaction should be created.
+@TransactionAttribute(TransactionAttribute.NOT_SUPPORTED) - transaction is not required to run the method. But if there is a transaction, the container suspends the transaction and executes the method without transaction. The container resumes the existing transaction after the method execution.
+
+
+### Persistent Unit
+The persistent unit is the main configuration of entity classes. A Java EE may have many entity classes, and there may be a need to segregate these classes in to descrete units. Every descrete unit of these entity classes is 

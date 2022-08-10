@@ -669,16 +669,66 @@ EJB 3.0 took a complete overhaul and mirros many features from the lightweight a
 ### Features of EJB specification framework
 - Declarative Metadata
 - Configuration By Exception
-- Dependency Management (of EJB beans). CDI provides dependency management in general of any class or interface. EJB also has a feature of dependency management of EJB container managed beans. EJB does not involve context but CDI is contextual.
+- Dependency Management (of EJB components). 
+
+CDI provides dependency management in general of any class or interface. EJB also has a feature of dependency management of EJB container managed beans. EJB does not involve context but CDI is contextual.
 ```
 // both of the below statement are valid and does the same job.
-
 @EJB EJBService ejbService;
 @Inject EJBService ejbService;
 ```
 
-- Lifecycle Management
+- Lifecycle Management (of EJB components)
 - Scalability
 - Transactionality
 - Security
 - Portability
+
+### EJB component model
+The EJB specifies a server-side component model using a set of classes and interfaces from the **javax.ejb** package.
+
+The EJB components can be broadly categorised into -
+1. Session Beans
+  - Stateless
+  - Stateful
+2. Message Driven Beans
+
+
+**Stateless EJB** : normally performs independent operation. Does not have any associated client state, but it may preserve its instance state.
+EJB container normally creates a pool of few stateless bean's object and use these objects to process client's request.
+
+```java
+@Stateless
+public class QueryService {
+  public List<Employee> getEmployees() {
+    // some implementation
+  }
+}
+```
+
+
+**Stateful EJB** : It preserves the conversational state with client. It keeps associated client state in its instance variables. A seperate stateful session bean is created for each client's request.
+```java
+@Stateful
+public class UserSession implements Serializable {
+  public String getCurrentUserName() {
+  
+  }
+}
+```
+EJB container can passivate the stateful bean (to free up memory) hence stateful beans implement Serializable. When need be a passive stateful bean can be activated again by container.
+
+**Sigleton EJB** : only one instance is created and that instance lies till the lifetime of the application.
+```java
+@Singleton
+public class ApplicationState {
+  
+}
+```
+
+### EJB Component lifecycle
+**@PostConstruct** : called when the bean has been instantiated and all the dependencies has been resolved.
+**@PreDestroy** : called just before the bean is available for garbage collection.
+
+**@PrePassivate** : only for stateful beans. called just before the bean is hibernated.
+**@PostActivate** : only for stateful beans. called after the bean is activated from passivation sate.

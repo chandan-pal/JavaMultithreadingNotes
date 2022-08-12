@@ -979,6 +979,8 @@ private String name;
 **@PreUpdate** : just before an entity is updated. there is no specific update method. so behaviour is dependent on persistence provider.
 **@PostUpdate** : 
 **@PostLoad** : 
+**@PreRemove** :
+**@PostRemove** :
 
 ```java
 @Entity
@@ -992,5 +994,25 @@ public class Employee {
   private void init() {
     this.age = Period.between(dateOfBirth, LocalDate.now()).getYears();
   }  
+}
+```
+
+## JPA - Entity Listeners
+API construct to separate Entity lifecycle callbacks. Sometime we may want to separate entity lifecycle callback to different class to separate concerns.
+
+```java
+public class EmployeeListener {
+  
+  @PrePersist
+  public void calculateEmployeeAge(Employee employee) {
+    employee.setAge(Period.between(employee.getDateOfBirth, LocalDate.now()).getYears());
+  }
+}
+
+@Entity
+@EntityListeners({EmployeeListener.class}) // register the listener class for the entity
+public class Employee {
+  private LocalDate dateOfBirth;
+  private int age;
 }
 ```

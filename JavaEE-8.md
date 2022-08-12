@@ -815,3 +815,27 @@ Normally merge is not required. To update an object you simply need to read it, 
 merge is only required when you have a detached copy of the persistence object. A detached cobject is one which was read through a different entity manager (or in a different transaction), or one that is cloned, or serialized.
 
 calling merge on an object will also cascade the merge operation across any relationship that is marked as cascade merge.
+
+
+**Detached vs Managed**
+JPA defines two main states for a given persistence context, managed and detached.
+- A managed object is one that was read in the current persistence context or registered with the persistence context. The persistence context will track changes to that object and maintain its object identity. 
+- A detached object is one that is not managed by the current persistence context. This could be an object read through a different persistence context, or an object that was cloned or serialized. A new object is also considered detached untill persist is called on it.
+
+
+### cascading
+if any operation is performed on an entity and the related entity also needs to be affected, then cascading is needed.
+
+In JPA there are following cascading types (javax.persistence.CascadeType)
+- ALL : propgates all operations from a parent to a child entity
+- PERSIST : propogates the persist operation from a parent to a child entity.
+- MERGE : propogates the merge operation from a parent to a child entity.
+- REMOVE : propogates the remove operation from parent to a child entity.
+- REFRESH : reread the value of a given instance from the database. (In some cases, we may change an instance after persisting in database, but later we nee to undo those changes. In this case when we do refresh on parent entity, the child entity also gets reloaded from the database.)
+- DETACH : when the parent entity is detached, the child entity also gets detached.
+
+Hibernate supports addition cascade types (org.hibernate.annotations.CascadeType)
+- REPLICATE : the replicate option is used when we have more than one datasource and we want the data in sync. The sync operation also propogates to child entities whenever performed on the parent entity.
+- SAVE_UPDATE : it's useful when we perform hibernate specific operations like save, update and saveOrUpdate.
+- LOCK : reattaches the entity and its child entity with the persistence context again.
+- DELETE : same as JPA CascadeType.REMOVE

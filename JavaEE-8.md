@@ -940,3 +940,37 @@ public Cleection<Object[]> getEmployeesLowestSalryByDept() {
 
 3. Update Queries
 4. Delete Queries
+
+
+## JPA - Bean Validation
+
+These validations are done just before an entity is persisted. If validation are not successful, ConstraintViolationException is thrown.
+
+**@NotEmpty** : checks that the attribute should bot be empty
+
+```
+@NotEmpty(message= "Department name must be set") // if name is empty, the message will be passed to the user.
+private String name; 
+
+@Past(message = "Date of birth must be in past") // ensures that the date is in past
+private LocalDate dateOfBirth;
+
+@PastOrPresent(message="Hired date must be in past or present")
+private LocalDate hireDate;
+
+@DecimalMax(value="60", message="Age cannot exceed 60")
+private int age;
+
+@DecimalMin(value="5000", message="basic salary must be equal to or exceed 5000")
+private int basicSalary;
+
+@Email(message="Email must be in the form user@domain.xyz")
+private String email;
+
+@Pattern(regexp="", message="department name must be in format DEP-XXXXXX")
+private String departmentName;
+
+@Size(max="40", message="name must be less than 40 chars")
+@NotEmpty(message= "name must be set")
+private String name;
+```

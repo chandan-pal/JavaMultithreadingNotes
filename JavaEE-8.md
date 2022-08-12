@@ -852,12 +852,43 @@ JPQL queries can be of two types.
 2. Dynamic Queries - defined dynamically at runtime. They have to be compiled every time.
 
 1. Select Queries
+
 **SELECT <select_expression>
   FROM <from_clause>
   [WHERE <conditional_expression>]
   [PRDER BY <order_by_clause>]**
  
- e.g. ``Select d from Department`` to select all objects of department.
+ ```
+ @NamedQuery(name="SELECT_ALL_DEPARTMENTS", query="Select d from Department d") // to select all objects of department.
+ 
+ @NamedQuery(name="GET_DEPARTMENT_NAMES", query="select d.departmentName from Department d") // to get names of all departments
+ 
+ // passing to entity manager
+ entityManager.createNamedQuery("SELECT_ALL_DEPARTMENTS", Department.class);
+ 
+ @NamedQuery(name="EMP_NAME_SALARY", query="select e.name, e.salary from Employee e") // to select only name and salary of employees.
+ 
+ Collection<Object[]> empNameAndSalaries = entityManager.createNamedQuery("EMP_NAME_SALARY", Object[].class).getResultList(); // gives a list of array. each array contain name of employee and its salary.
+ 
+ // constructor expressions
+ public class EmployeeDetails {
+  private String name;
+  private BigDecimal salary;
+  
+  public EmployeeDetails(String name, BigDecimal salary) {
+    this.name = name;
+    this.salary = salary;
+  }
+ }
+ 
+ @NamedQuery(name="EMP_NAME_SALRY2", query="select new com.demo.EmployeeDetails(e.name, e.salary) from Employee e") // JPQL with constructor expression
+ // the provider will call the constructor the EmployeeDetails class with the selects to create object corresponding to each row.
+ // note the object does not have to be an entity.
+ 
+ Collection<EmployeeDetails> listEmployeeDetails = entityManager.createNamedQuery("EMP_NAME_SALRY2", EmployeeDetails.class).getResultList();
+ ```
+ 
+ 
 
 2. Aggregate Queries
 3. Update Queries

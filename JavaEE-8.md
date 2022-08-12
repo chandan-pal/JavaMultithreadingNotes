@@ -886,10 +886,57 @@ JPQL queries can be of two types.
  // note the object does not have to be an entity.
  
  Collection<EmployeeDetails> listEmployeeDetails = entityManager.createNamedQuery("EMP_NAME_SALRY2", EmployeeDetails.class).getResultList();
+ 
+ 
+ // joining two entities
+ @NamedQuery(name="SELECT_EMP_ALLOWANCES", query="select al from Employee e join e.employeeAllowances al") // select all employee allowances
+ 
+ 
+ // joining maps
+ @NamedQuery(name="", query="select e.name, KEY(p), VALUE(p) from Employee e join e.phoneNumbers p")
+ @Entity
+public class Employee {
+  @ElementCollection // creates a new table for mapping the Map
+  @CollectionTable(name = "PHONE_NUMBERS") // customize the secondary table
+  @MapKeyColumn(name="PHONE_TYPE") // customize the column that stores the key of the map
+  @Column(name="PHONE_NUM") // customize the value column
+  private Map<String, String> phoneNumbers;
+}
+
+
+// Fetch join
+@NamedQuery(name="", query="select e from Employee e join fetch e.employeeAllowances") // the use of fetch keyword makes sure to fetch the allowances along with the employee. The allowances will not be lazily loaded.
+
+ 
  ```
  
  
 
 2. Aggregate Queries
+way to summarize data
+
+```
+// sum
+public Cleection<Object[]> getTotalEmployeeSalariesByDept() {
+  TypedQuery<Object[]> query = entityManager.createQuery("select d.name, sum(e.basicSalary) from Department d join d.employees e group by d.name", Object[].class);
+}
+
+// average
+// average of employee salaries in a department, ecluding managers
+public Cleection<Object[]> getAvgEmpSalariesByDept() {
+  TypedQuery<Object[]> query = entityManager.createQuery("select d.name, avg(e.basicSalary) from Department d join d.employees e where e.subordinates is empty group by d.name", Object[].class);
+}
+
+// count
+public Cleection<Object[]> countEmployeesByDepartment() {
+  TypedQuery<Object[]> query = entityManager.createQuery("select d.name, count(e) from Department d join d.employees e group by d.name", Object[].class);
+}
+
+// max/min
+public Cleection<Object[]> getEmployeesLowestSalryByDept() {
+  TypedQuery<Object[]> query = entityManager.createQuery("select d.name, max(e) from Department d join d.employees e group by d.name", Object[].class);
+}
+```
+
 3. Update Queries
 4. Delete Queries

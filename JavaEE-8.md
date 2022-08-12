@@ -839,3 +839,26 @@ Hibernate supports addition cascade types (org.hibernate.annotations.CascadeType
 - SAVE_UPDATE : it's useful when we perform hibernate specific operations like save, update and saveOrUpdate.
 - LOCK : reattaches the entity and its child entity with the persistence context again.
 - DELETE : same as JPA CascadeType.REMOVE
+
+## JPQL - Java Persistence Query Language
+String based standard API for querying entities. Similar to SQL but query on entities.
+
+JPQL queries are portable and can be translated into variuos SQLs using different dialects.
+
+Another API for query on entities is **criteria-API** which provides type saftey, whereas JPQL does not provide type saftey.
+
+JPQL queries can be of two types.
+1. Named Queries - static, predefined and named. The query can be referred anywhere else with its name. Named queries can be optimized by the provider because they are compiled.
+2. Dynamic Queries - defined dynamically at runtime. They have to be compiled every time.
+
+1. Select Queries
+**SELECT <select_expression>
+  FROM <from_clause>
+  [WHERE <conditional_expression>]
+  [PRDER BY <order_by_clause>]**
+ 
+ e.g. ``Select d from Department`` to select all objects of department.
+
+2. Aggregate Queries
+3. Update Queries
+4. Delete Queries

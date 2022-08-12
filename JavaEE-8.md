@@ -946,8 +946,6 @@ public Cleection<Object[]> getEmployeesLowestSalryByDept() {
 
 These validations are done just before an entity is persisted. If validation are not successful, ConstraintViolationException is thrown.
 
-**@NotEmpty** : checks that the attribute should bot be empty
-
 ```
 @NotEmpty(message= "Department name must be set") // if name is empty, the message will be passed to the user.
 private String name; 
@@ -973,4 +971,26 @@ private String departmentName;
 @Size(max="40", message="name must be less than 40 chars")
 @NotEmpty(message= "name must be set")
 private String name;
+```
+
+## JPA - Entity Lifecycle callbacks
+**@PrePersiste** : just before the entity is about to be persisted in the persistence context.
+**@PostPersiste** : just after persist method is called. 
+**@PreUpdate** : just before an entity is updated. there is no specific update method. so behaviour is dependent on persistence provider.
+**@PostUpdate** : 
+**@PostLoad** : 
+
+```java
+@Entity
+public class Employee {
+  
+  private LocalDate dateOfBirth;
+  
+  private int age;
+  
+  @PrePersist
+  private void init() {
+    this.age = Period.between(dateOfBirth, LocalDate.now()).getYears();
+  }  
+}
 ```

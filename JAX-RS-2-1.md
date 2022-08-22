@@ -183,3 +183,122 @@ public Response getBook(@PathParam("id") long id, @Context Request request){
 A `ResponseBuilder` is automatically constructed by calling **evaluatePreconditions** on the request.\
 If the builder is null, the resource is out of date and the object needs to be sent back in the response.\
 Otherwise, the preconditions indicate that the client has the latest version of the resource and the 304 Not Modified status code will be automatically assigned.
+
+
+## JAX-RS File Upload
+```
+@POST
+@Path("/upload")
+@Consumes({MediaType.APPLICATION_OCTET_STREAM, "image/png", "image/jpeg", "image/gif"})
+public Response uploadPicture(File picture, @QueryParam("id") @NotNull Long id) {
+  Employee employee = service.findEmployeeById(id);
+  try (Reader reader = new FileReader(picture)) {
+    employee.setPicture(Files.readAllBytes(Paths.get(picture.toURI())));
+    service.saveEmployee(employee);
+    
+    Response.ok().build();
+  } catch (IOException e) {
+    e.printStackTrace();
+    return Response.serverError().build();
+  }
+}
+```
+
+## JAX-RS File Download
+```
+@GET
+@Path("download")
+@Produces({MediaType.APPLICATION_OCTET_STREAM, "image/png", "image/jpeg", "image/gif"})
+public Response getEmployeePicture(@QueryParam("id") @NotNull Long id) throws Exception {
+  Employee employee = service.findEmployeeById(id);
+  if (employee!=null) {
+    return Response.ok().entity(Files.write(Paths.get("ppic.png"), employee.getPicture()).toFile()).build();
+  }
+  return Response.noContent().build();
+}
+```
+
+## Request & Response Filters
+These are like interceptors which can be placed to perform some operations before a requets is processed by a resource controller or before a resonse is sent to the client.
+
+**ContainerResponseFilter**
+```
+// static container response filter
+@Provider
+public class CacheResponseFilter implement ContainerResponseFilter {
+  @Override
+  public void fiter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
+    String method = requestContext.getMethod();
+    String path = requestContext.getUriInfo().getPath();
+    if ("GET".equalsIgnoreCase(method) && "employees".equalIgnoreCase(path)) {
+      CacheControl cacheControl = new CacheControl();
+      cacheControl.setMaxAge(100);
+      cacheControl.setPrivate(true);
+      
+      responseContext.getHeaders().add("Cache-Control", cacheControl);
+      responseContext.getHeaders().add("MyMessage", "Cache Control added by filter!");
+    }
+  }
+}
+```
+
+**Dynamic Response Filter - Annotation based**
+```
+
+// custom annotation MaxAge creation
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.METHOD)
+public @interface MaxAge {
+  int age();
+}
+
+public DynamicFilter implements ContainerResponseFilter {
+  int age;
+  
+  public DynamicFilter(int age) {
+    this.age = age;
+  }
+  
+  public DynamicFilter() {
+  
+  }
+  
+  @Override
+  public void fiter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
+    String method = requestContext.getMethod();
+    String path = requestContext.getUriInfo().getPath();
+    if ("GET".equalsIgnoreCase(method)) {
+      CacheControl cacheControl = new CacheControl();
+      cacheControl.setMaxAge(age);
+      
+      responseContext.getHeaders().add("Cache-Control", cacheControl);
+    }
+  }
+  
+  
+  // implement dynamic filter register
+  @Provider
+  public class DynamicFilterFeature implements DynamicFeature {
+    @Override
+    public void configure(ResourceInfo resourceInfo, FeatureContext context) {
+      MaxAge annotation = resourceInfo.getResourceMethod().getAnnotation(MaxAge.class);
+      
+      if (annotation != null) {
+        DynamicFilter dynamicFilter = new DynamicFilter(annotation.age());
+        context.register(dynamicFilter);
+      }
+    }
+  }
+  
+  // use the annotation based dynamic filter
+  @GET
+  @Path("id")
+  @Produces("application/json")
+  @MaxAge(age = 200)
+  public Respinse getEmployeeById(@PathParam("id") Long id) {
+    //
+    return Response.ok().status(Status.OK).build();
+  }
+  
+}
+```

@@ -110,3 +110,76 @@ The object instances that it injects are -
 9. HttpHeaders - maintains the HTTP headers keys and values
 10. UriInfo - query parametss and path variables from the URI called.
 
+## Exception Mappers
+ExceptionMapper is a contract for a provider that maps Java exceptions to Response objects so that the client and see a proper response and make some sense out of it.
+
+```
+@Provider
+public class MyExceptionMapper implements ExceptioMapper<MyException> {
+  @Override
+  public Response toResponse(MyException ex) {
+    return Response.status(Status.BAD_REQUEST).entity(ex.getMessage()).build();
+  }
+}
+```
+
+## @HeaderParam
+to grab property from header and inject into request call
+```
+@GET
+@Path("employee/{id}")
+public Response getEmployeeById(@PathParam("id") @DefaultValue("0") Long id, @HeaderParam("Referer")) {
+  return Response.ok(service.findEmployeeById(id)).status(Response.status.OK).build();
+}
+```
+
+## Caching with Cache control and eTag
+JAX-RS provides contract for managing caching. The `cache-control` header can be set on the response object to define HTTP caching.
+Java EE provide **CacheControl** class to achieve the same.
+
+
+```
+@Path("/book/{id}")
+@GET
+public Response getBook(@PathParam("id") long id){
+
+    Book myBook = getBookFromDB(id);
+
+    CacheControl cc = new CacheControl();
+    cc.setMaxAge(86400);
+    cc.setPrivate(true);
+
+    ResponseBuilder builder = Response.ok(myBook);
+    builder.cacheControl(cc); // this will set cache-control header in response
+    return builder.build();
+}
+```
+
+EntityTag (ETag) - along with `cache-control` header and `ETag` header can be passed in the response to validate the resource which the client has.\
+The ETag should be a unique hash of the resource and requires knowledge of internal business logic to construct. One possiblity is to use the hashcode of the object as ETag.
+
+```
+@Path("/book/{id}")
+@GET
+public Response getBook(@PathParam("id") long id, @Context Request request){
+
+    Book myBook = getBookFromDB(id);
+    CacheControl cc = new CacheControl();
+    cc.setMaxAge(86400);
+
+    EntityTag etag = new EntityTag(Integer.toString(myBook.hashCode()));
+    ResponseBuilder builder = request.evaluatePreconditions(etag);
+
+    // cached resource did change -> serve updated content
+    if(builder == null){
+        builder = Response.ok(myBook);
+        builder.tag(etag);
+    }
+
+    builder.cacheControl(cc);
+    return builder.build();
+}
+```
+A `ResponseBuilder` is automatically constructed by calling **evaluatePreconditions** on the request.\
+If the builder is null, the resource is out of date and the object needs to be sent back in the response.\
+Otherwise, the preconditions indicate that the client has the latest version of the resource and the 304 Not Modified status code will be automatically assigned.

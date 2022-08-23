@@ -302,3 +302,16 @@ public DynamicFilter implements ContainerResponseFilter {
   
 }
 ```
+
+**ContainerRequestFilter**
+```
+@Provider
+@PreMatching // filter is executed before the request is matched to the controller
+public class PreMatchingServerRequestFilter implements ContainerRequestFilter {
+  
+  @Override
+  public void filter(ContainerRequestContext requestContext) throws IOException {
+    // some implementation
+  }
+}
+```

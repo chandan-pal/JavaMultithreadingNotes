@@ -398,3 +398,42 @@ public class JaxRsClient {
   }
 }
 ```
+
+## JAX - SSE (Server Sent Events)
+Server Sent Event (SSE) is an HTTP based specification that provides a way to establish a long-running and mono-channel(uni-directional) connection from the server to the client.
+
+The client initiates the SSE connection by using the media type text/event-stream in the Accept header. Later it gets updated automatically without requestig the server.
+
+```
+@ApplicationScoped
+@Path("sse-path")
+public class ServerSentEventResource {
+  @Context
+  private Sse sse;
+  
+  private SseBroadcaster sseBroadCaster;
+  
+  private SseEventSink eventSink;
+  
+  @PostConstruct
+  private void init() {
+    sseBroadCaster = new SseBroadCaster();
+  }
+  
+  @GET
+  @Produces(MediaType.SERVER_SENT_EVENTS)
+  public void fetch(@Context SseEventSink sseEventSink) {
+    sseBroadCaster.register(sseEventSink);
+    this.eventSink = sseEventSink;
+    
+    System.out.println("SSE Opened!");
+  }
+  
+  @POST
+  @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+  public Response broadCast(@FormParam("message") String message) {
+    OutboundSseEvent broadcastEvent = sse.newEvent(message);
+    sseBroadcaster.broadcast(broadcastEvent);
+    return Response.noContent().build();
+  }
+}

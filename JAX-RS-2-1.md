@@ -315,3 +315,42 @@ public class PreMatchingServerRequestFilter implements ContainerRequestFilter {
   }
 }
 ```
+
+## JAX-RS Async
+@Suspended annotation and asyncResponse
+
+```
+@Inject
+ManagedExecutorService managedExecutorService; // extension of executor service
+
+
+@POST
+@Path("run")
+public void run(@Suspended AsyscResponse asyncResponse) {
+  // get hold of the current thread (as the current thread will be suspended and we will spawn new thread for heavy task
+  final String currentThread = Thread.currentThread().getName();
+  
+  // set time out for asyncResponse
+  asyncResponse.setTimeout(5000, TimeUnit.MILISECONDS); // set time out duration
+  
+  // optional custom timeout handler
+  asyncRespinse.setTimeoutHandler(response -> {
+    response.resume(Response.status(Status.REQUEST_TIMEOUT).entity("Sorry, the request timed out. Please try again.").build());
+  });
+  
+  // Register other callbacks
+  asyncResponse.register(CompletionCallbackHandler.class);
+  
+  managedExecutorService.submit(()-> {
+    final String spawnedThreadName = Thread.currentThread().getName();
+    
+    // very expensive task
+    service.compute();
+    
+    // resume the main thread and send response
+    asyncResponse.resume(Response.ok().header("Original Thread", currentThread))
+      .header("Spawned Thread", spawnedThreadName)
+      .status(Status.OK).build());
+  });
+}
+```

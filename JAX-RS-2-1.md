@@ -354,3 +354,47 @@ public void run(@Suspended AsyscResponse asyncResponse) {
   });
 }
 ```
+
+
+## JSON-B Integration
+
+## JSON-P Integration
+JSON Processing API
+
+It is a java API to process (e.g. parse, generate, transform and query) JSON messages.\
+It produces and consumes JSON text in a streaming fashion and allows to build a java object model for JSON text using API classes.
+
+
+## JAX - Client API
+This API can be used to call downstream API from within a server
+
+```
+@RequestScoped
+public class JaxRsClient {
+  private Client client;
+  WebTarget webTarget;
+  
+  private final String haveIBeenPawned = "https://haveibeenpwned.com/api/v2/breachedaccount";
+  
+  @PostConstruct
+  private void init() {
+    client = ClientBuilder.newBuilder().connectTimeout(7, TimeUnit.SECONDS).readTimeout(3, TimeUnit.SECONDS).build();
+    
+    webTarget = client.target(haveIBeenPawned);
+  }
+  
+  @PreDestroy
+  private void destroy() {
+    if (client != null) {
+      client.close();
+    }
+  }
+  
+  
+  public int checkBreaches() {
+    JsonArray jsonValues = webTarget.path("account).resolveTemplate("account", email).request(MeadiaType.TEXT_PLAIN).get(JsonArray.class);
+    parseJsonArray(jsonValues);
+    return jsonValues.size();
+  }
+}
+```
